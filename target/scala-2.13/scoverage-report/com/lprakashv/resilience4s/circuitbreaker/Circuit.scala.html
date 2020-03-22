@@ -1,0 +1,3292 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          com/lprakashv/resilience4s/circuitbreaker/Circuit.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package com.lprakashv.resilience4s.circuitbreaker
+</span>2 <span style=''>
+</span>3 <span style=''>import java.util.concurrent.atomic.{AtomicInteger, AtomicLong, AtomicReference}
+</span>4 <span style=''>import java.util.logging.Logger
+</span>5 <span style=''>import java.util.{Date, Timer, TimerTask}
+</span>6 <span style=''>
+</span>7 <span style=''>import com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException
+</span>8 <span style=''>import com.lprakashv.resilience4s.circuitbreaker.CircuitResult.{
+</span>9 <span style=''>  CircuitFailure,
+</span>10 <span style=''>  CircuitSuccess
+</span>11 <span style=''>}
+</span>12 <span style=''>import com.lprakashv.resilience4s.circuitbreaker.CircuitState.{
+</span>13 <span style=''>  Closed,
+</span>14 <span style=''>  HalfOpen,
+</span>15 <span style=''>  Open
+</span>16 <span style=''>}
+</span>17 <span style=''>
+</span>18 <span style=''>import scala.concurrent.duration._
+</span>19 <span style=''>import scala.concurrent.{ExecutionContext, Future}
+</span>20 <span style=''>import scala.util.{Failure, Success, Try}
+</span>21 <span style=''>
+</span>22 <span style=''>class Circuit[R](name: String,
+</span>23 <span style=''>                 private final val threshold: Int,
+</span>24 <span style=''>                 private final val timeout: Duration,
+</span>25 <span style=''>                 private final val maxAllowedHalfOpen: Int,
+</span>26 <span style=''>                 defaultAction: =&gt; R,
+</span>27 <span style=''>                 private val logger: Logger,
+</span>28 <span style=''>                 failedWhen: R =&gt; Boolean = { _: R =&gt;
+</span>29 <span style=''>                   false
+</span>30 <span style=''>                 },
+</span>31 <span style=''>                 ignoreException: Throwable =&gt; Boolean = { _: Throwable =&gt;
+</span>32 <span style=''>                   false
+</span>33 <span style=''>                 })(implicit ec: ExecutionContext) {
+</span>34 <span style=''>  private def circuitLogger(msg: String): Unit =
+</span>35 <span style=''>    </span><span style='background: #AEF1AE'>logger.info(s&quot;[$name] [${new Date()}] $msg&quot;)</span><span style=''>
+</span>36 <span style=''>
+</span>37 <span style=''>  private val closedConsecutiveFailureCount = </span><span style='background: #AEF1AE'>new AtomicInteger(0)</span><span style=''>
+</span>38 <span style=''>  private val lastOpenTime = </span><span style='background: #AEF1AE'>new AtomicLong(Long.MaxValue)</span><span style=''>
+</span>39 <span style=''>  private val state = </span><span style='background: #AEF1AE'>new AtomicReference[CircuitState](CircuitState.Closed)</span><span style=''>
+</span>40 <span style=''>  private val halfOpenConsecutiveFailuresCount = </span><span style='background: #AEF1AE'>new AtomicInteger(0)</span><span style=''>
+</span>41 <span style=''>
+</span>42 <span style=''>  </span><span style='background: #AEF1AE'>new Timer(s&quot;$name-circuit-opener&quot;).scheduleAtFixedRate(
+</span>43 <span style=''></span><span style='background: #AEF1AE'>    new TimerTask {
+</span>44 <span style=''></span><span style='background: #AEF1AE'>      override def run(): Unit = state.get() match {
+</span>45 <span style=''></span><span style='background: #AEF1AE'>        case Open
+</span>46 <span style=''></span><span style='background: #AEF1AE'>            if (System
+</span>47 <span style=''></span><span style='background: #AEF1AE'>              .currentTimeMillis() - lastOpenTime.get() &gt; timeout.toMillis) =&gt;
+</span>48 <span style=''></span><span style='background: #AEF1AE'>          circuitLogger(&quot;Max open timeout reached.&quot;)
+</span>49 <span style=''></span><span style='background: #AEF1AE'>          halfOpenCircuit()
+</span>50 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; ()
+</span>51 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>52 <span style=''></span><span style='background: #AEF1AE'>    },
+</span>53 <span style=''></span><span style='background: #AEF1AE'>    0L,
+</span>54 <span style=''></span><span style='background: #AEF1AE'>    10L
+</span>55 <span style=''></span><span style='background: #AEF1AE'>  )</span><span style=''>
+</span>56 <span style=''>
+</span>57 <span style=''>  def getState: CircuitState = </span><span style='background: #F0ADAD'>state.get()</span><span style=''>
+</span>58 <span style=''>
+</span>59 <span style=''>  def execute(block: =&gt; R): CircuitResult[R] = {
+</span>60 <span style=''>    </span><span style='background: #AEF1AE'>state.get()</span><span style=''> match {
+</span>61 <span style=''>      case Closed   =&gt; </span><span style='background: #AEF1AE'>handleClosed(block)</span><span style=''>
+</span>62 <span style=''>      case HalfOpen =&gt; </span><span style='background: #AEF1AE'>handleHalfOpen(block)</span><span style=''>
+</span>63 <span style=''>      case Open     =&gt; </span><span style='background: #AEF1AE'>handleOpen</span><span style=''>
+</span>64 <span style=''>    }
+</span>65 <span style=''>  }
+</span>66 <span style=''>
+</span>67 <span style=''>  def executeAsync(block: =&gt; Future[R]): Future[CircuitResult[R]] = {
+</span>68 <span style=''>    </span><span style='background: #AEF1AE'>state.get()</span><span style=''> match {
+</span>69 <span style=''>      case Closed   =&gt; </span><span style='background: #F0ADAD'>handleClosedAsync(block)</span><span style=''>
+</span>70 <span style=''>      case HalfOpen =&gt; </span><span style='background: #F0ADAD'>handleHalfOpenAsync(block)</span><span style=''>
+</span>71 <span style=''>      case Open     =&gt; </span><span style='background: #AEF1AE'>Future.successful(handleOpen)</span><span style=''>
+</span>72 <span style=''>    }
+</span>73 <span style=''>  }
+</span>74 <span style=''>
+</span>75 <span style=''>  private def openCircuit(): Unit = {
+</span>76 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(&quot;Opening circuit...&quot;)</span><span style=''>
+</span>77 <span style=''>    </span><span style='background: #AEF1AE'>state.set(Open)</span><span style=''>
+</span>78 <span style=''>    </span><span style='background: #AEF1AE'>lastOpenTime.set(System.currentTimeMillis())</span><span style=''>
+</span>79 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(&quot;Circuit is open.&quot;)</span><span style=''>
+</span>80 <span style=''>  }
+</span>81 <span style=''>
+</span>82 <span style=''>  private def closeCircuit(): Unit = {
+</span>83 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(&quot;Closing circuit...&quot;)</span><span style=''>
+</span>84 <span style=''>    </span><span style='background: #AEF1AE'>state.set(Closed)</span><span style=''>
+</span>85 <span style=''>    </span><span style='background: #AEF1AE'>lastOpenTime.set(Long.MaxValue)</span><span style=''>
+</span>86 <span style=''>    </span><span style='background: #AEF1AE'>closedConsecutiveFailureCount.set(0)</span><span style=''>
+</span>87 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(&quot;Circuit is closed.&quot;)</span><span style=''>
+</span>88 <span style=''>  }
+</span>89 <span style=''>
+</span>90 <span style=''>  private def halfOpenCircuit(): Unit = {
+</span>91 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(&quot;Half-opening circuit...&quot;)</span><span style=''>
+</span>92 <span style=''>    </span><span style='background: #AEF1AE'>state.set(HalfOpen)</span><span style=''>
+</span>93 <span style=''>    </span><span style='background: #AEF1AE'>halfOpenConsecutiveFailuresCount.set(0)</span><span style=''>
+</span>94 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(&quot;Circuit is half-open.&quot;)</span><span style=''>
+</span>95 <span style=''>  }
+</span>96 <span style=''>
+</span>97 <span style=''>  private def handleClosed(block: =&gt; R): CircuitResult[R] = {
+</span>98 <span style=''>    </span><span style='background: #AEF1AE'>Try(block)</span><span style=''> match {
+</span>99 <span style=''>      case Failure(exception) =&gt;
+</span>100 <span style=''>        </span><span style='background: #AEF1AE'>handleFailure(
+</span>101 <span style=''></span><span style='background: #AEF1AE'>          block,
+</span>102 <span style=''></span><span style='background: #AEF1AE'>          Left(exception),
+</span>103 <span style=''></span><span style='background: #AEF1AE'>          closedConsecutiveFailureCount,
+</span>104 <span style=''></span><span style='background: #AEF1AE'>          threshold
+</span>105 <span style=''></span><span style='background: #AEF1AE'>        )</span><span style=''>
+</span>106 <span style=''>      case Success(value) if </span><span style='background: #AEF1AE'>failedWhen(value)</span><span style=''> =&gt;
+</span>107 <span style=''>        </span><span style='background: #F0ADAD'>handleFailure(
+</span>108 <span style=''></span><span style='background: #F0ADAD'>          block,
+</span>109 <span style=''></span><span style='background: #F0ADAD'>          Right(value),
+</span>110 <span style=''></span><span style='background: #F0ADAD'>          closedConsecutiveFailureCount,
+</span>111 <span style=''></span><span style='background: #F0ADAD'>          threshold
+</span>112 <span style=''></span><span style='background: #F0ADAD'>        )</span><span style=''>
+</span>113 <span style=''>      case Success(value) =&gt;
+</span>114 <span style=''>        </span><span style='background: #AEF1AE'>closedConsecutiveFailureCount.set(0)</span><span style=''>
+</span>115 <span style=''>        </span><span style='background: #AEF1AE'>CircuitSuccess(value)</span><span style=''>
+</span>116 <span style=''>    }
+</span>117 <span style=''>  }
+</span>118 <span style=''>
+</span>119 <span style=''>  private def handleHalfOpen(block: =&gt; R): CircuitResult[R] = {
+</span>120 <span style=''>    </span><span style='background: #AEF1AE'>Try(block)</span><span style=''> match {
+</span>121 <span style=''>      case Failure(exception) =&gt;
+</span>122 <span style=''>        </span><span style='background: #AEF1AE'>handleFailure(
+</span>123 <span style=''></span><span style='background: #AEF1AE'>          block,
+</span>124 <span style=''></span><span style='background: #AEF1AE'>          Left(exception),
+</span>125 <span style=''></span><span style='background: #AEF1AE'>          halfOpenConsecutiveFailuresCount,
+</span>126 <span style=''></span><span style='background: #AEF1AE'>          maxAllowedHalfOpen
+</span>127 <span style=''></span><span style='background: #AEF1AE'>        )</span><span style=''>
+</span>128 <span style=''>      case Success(value) if </span><span style='background: #AEF1AE'>failedWhen(value)</span><span style=''> =&gt;
+</span>129 <span style=''>        </span><span style='background: #F0ADAD'>handleFailure(
+</span>130 <span style=''></span><span style='background: #F0ADAD'>          block,
+</span>131 <span style=''></span><span style='background: #F0ADAD'>          Right(value),
+</span>132 <span style=''></span><span style='background: #F0ADAD'>          halfOpenConsecutiveFailuresCount,
+</span>133 <span style=''></span><span style='background: #F0ADAD'>          maxAllowedHalfOpen
+</span>134 <span style=''></span><span style='background: #F0ADAD'>        )</span><span style=''>
+</span>135 <span style=''>      case Success(value) =&gt;
+</span>136 <span style=''>        </span><span style='background: #AEF1AE'>closeCircuit()</span><span style=''>
+</span>137 <span style=''>        </span><span style='background: #AEF1AE'>CircuitSuccess(value)</span><span style=''>
+</span>138 <span style=''>    }
+</span>139 <span style=''>  }
+</span>140 <span style=''>
+</span>141 <span style=''>  private def handleClosedAsync(
+</span>142 <span style=''>    block: =&gt; Future[R]
+</span>143 <span style=''>  ): Future[CircuitResult[R]] = {
+</span>144 <span style=''>    </span><span style='background: #F0ADAD'>block
+</span>145 <span style=''></span><span style='background: #F0ADAD'>      .flatMap { value =&gt;
+</span>146 <span style=''></span><span style='background: #F0ADAD'>        if (failedWhen(value)) {
+</span>147 <span style=''></span><span style='background: #F0ADAD'>          handleFailureAsync(
+</span>148 <span style=''></span><span style='background: #F0ADAD'>            Future.successful(value),
+</span>149 <span style=''></span><span style='background: #F0ADAD'>            None,
+</span>150 <span style=''></span><span style='background: #F0ADAD'>            closedConsecutiveFailureCount,
+</span>151 <span style=''></span><span style='background: #F0ADAD'>            threshold
+</span>152 <span style=''></span><span style='background: #F0ADAD'>          )
+</span>153 <span style=''></span><span style='background: #F0ADAD'>        } else {
+</span>154 <span style=''></span><span style='background: #F0ADAD'>          closedConsecutiveFailureCount.set(0)
+</span>155 <span style=''></span><span style='background: #F0ADAD'>          Future.successful(CircuitSuccess(value))
+</span>156 <span style=''></span><span style='background: #F0ADAD'>        }
+</span>157 <span style=''></span><span style='background: #F0ADAD'>      }(ec)
+</span>158 <span style=''></span><span style='background: #F0ADAD'>      .recoverWith {
+</span>159 <span style=''></span><span style='background: #F0ADAD'>        case exception =&gt;
+</span>160 <span style=''></span><span style='background: #F0ADAD'>          handleFailureAsync(
+</span>161 <span style=''></span><span style='background: #F0ADAD'>            block,
+</span>162 <span style=''></span><span style='background: #F0ADAD'>            Some(exception),
+</span>163 <span style=''></span><span style='background: #F0ADAD'>            closedConsecutiveFailureCount,
+</span>164 <span style=''></span><span style='background: #F0ADAD'>            threshold
+</span>165 <span style=''></span><span style='background: #F0ADAD'>          )
+</span>166 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
+</span>167 <span style=''>  }
+</span>168 <span style=''>
+</span>169 <span style=''>  private def handleHalfOpenAsync(
+</span>170 <span style=''>    block: =&gt; Future[R]
+</span>171 <span style=''>  ): Future[CircuitResult[R]] = {
+</span>172 <span style=''>    </span><span style='background: #F0ADAD'>block
+</span>173 <span style=''></span><span style='background: #F0ADAD'>      .flatMap { value =&gt;
+</span>174 <span style=''></span><span style='background: #F0ADAD'>        if (failedWhen(value)) {
+</span>175 <span style=''></span><span style='background: #F0ADAD'>          handleFailureAsync(
+</span>176 <span style=''></span><span style='background: #F0ADAD'>            Future.successful(value),
+</span>177 <span style=''></span><span style='background: #F0ADAD'>            None,
+</span>178 <span style=''></span><span style='background: #F0ADAD'>            halfOpenConsecutiveFailuresCount,
+</span>179 <span style=''></span><span style='background: #F0ADAD'>            maxAllowedHalfOpen
+</span>180 <span style=''></span><span style='background: #F0ADAD'>          )
+</span>181 <span style=''></span><span style='background: #F0ADAD'>        } else {
+</span>182 <span style=''></span><span style='background: #F0ADAD'>          closeCircuit()
+</span>183 <span style=''></span><span style='background: #F0ADAD'>          Future.successful(CircuitSuccess(value))
+</span>184 <span style=''></span><span style='background: #F0ADAD'>        }
+</span>185 <span style=''></span><span style='background: #F0ADAD'>      }(ec)
+</span>186 <span style=''></span><span style='background: #F0ADAD'>      .recoverWith {
+</span>187 <span style=''></span><span style='background: #F0ADAD'>        case exception =&gt;
+</span>188 <span style=''></span><span style='background: #F0ADAD'>          handleFailureAsync(
+</span>189 <span style=''></span><span style='background: #F0ADAD'>            block,
+</span>190 <span style=''></span><span style='background: #F0ADAD'>            Some(exception),
+</span>191 <span style=''></span><span style='background: #F0ADAD'>            halfOpenConsecutiveFailuresCount,
+</span>192 <span style=''></span><span style='background: #F0ADAD'>            maxAllowedHalfOpen
+</span>193 <span style=''></span><span style='background: #F0ADAD'>          )
+</span>194 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
+</span>195 <span style=''>  }
+</span>196 <span style=''>
+</span>197 <span style=''>  private def handleOpen: CircuitResult[R] = {
+</span>198 <span style=''>    </span><span style='background: #AEF1AE'>CircuitSuccess(defaultAction)</span><span style=''>
+</span>199 <span style=''>  }
+</span>200 <span style=''>
+</span>201 <span style=''>  private def handleFailure(block: =&gt; R,
+</span>202 <span style=''>                            throwableOrValue: Either[Throwable, R],
+</span>203 <span style=''>                            atomicCounter: AtomicInteger,
+</span>204 <span style=''>                            maxFailures: Int): CircuitResult[R] = {
+</span>205 <span style=''>    val currentFailureCount = </span><span style='background: #AEF1AE'>atomicCounter.incrementAndGet()</span><span style=''>
+</span>206 <span style=''>    </span><span style='background: #AEF1AE'>circuitLogger(
+</span>207 <span style=''></span><span style='background: #AEF1AE'>      s&quot;[${state.get()}-error-count = $atomicCounter] $throwableOrValue&quot;
+</span>208 <span style=''></span><span style='background: #AEF1AE'>    )</span><span style=''>
+</span>209 <span style=''>    if (</span><span style='background: #AEF1AE'>currentFailureCount &gt; maxFailures</span><span style=''>) </span><span style='background: #AEF1AE'>{
+</span>210 <span style=''></span><span style='background: #AEF1AE'>      openCircuit()
+</span>211 <span style=''></span><span style='background: #AEF1AE'>      execute(block)
+</span>212 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> else
+</span>213 <span style=''>      </span><span style='background: #AEF1AE'>throwableOrValue match {
+</span>214 <span style=''></span><span style='background: #AEF1AE'>        case Left(exception) if ignoreException(exception) =&gt;
+</span>215 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>openCircuit()</span><span style='background: #AEF1AE'>
+</span>216 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>execute(block)</span><span style='background: #AEF1AE'>
+</span>217 <span style=''></span><span style='background: #AEF1AE'>        case Left(exception) =&gt; CircuitFailure(exception)
+</span>218 <span style=''></span><span style='background: #AEF1AE'>        case Right(value) =&gt;
+</span>219 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>CircuitFailure(InvalidEvalCircuitException(name, value))</span><span style='background: #AEF1AE'>
+</span>220 <span style=''></span><span style='background: #AEF1AE'>      }</span><span style=''>
+</span>221 <span style=''>  }
+</span>222 <span style=''>
+</span>223 <span style=''>  private def handleFailureAsync(block: =&gt; Future[R],
+</span>224 <span style=''>                                 maybeException: Option[Throwable],
+</span>225 <span style=''>                                 atomicCounter: AtomicInteger,
+</span>226 <span style=''>                                 maxFailures: Int): Future[CircuitResult[R]] = {
+</span>227 <span style=''>    val currentFailureCount = </span><span style='background: #F0ADAD'>atomicCounter.incrementAndGet()</span><span style=''>
+</span>228 <span style=''>    </span><span style='background: #F0ADAD'>circuitLogger(
+</span>229 <span style=''></span><span style='background: #F0ADAD'>      s&quot;[${state.get()}-error-count = $atomicCounter] $maybeException&quot;
+</span>230 <span style=''></span><span style='background: #F0ADAD'>    )</span><span style=''>
+</span>231 <span style=''>    if (</span><span style='background: #F0ADAD'>currentFailureCount &gt; maxFailures</span><span style=''>) </span><span style='background: #F0ADAD'>{
+</span>232 <span style=''></span><span style='background: #F0ADAD'>      openCircuit()
+</span>233 <span style=''></span><span style='background: #F0ADAD'>      executeAsync(block)
+</span>234 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''> else
+</span>235 <span style=''>      </span><span style='background: #F0ADAD'>maybeException match {
+</span>236 <span style=''></span><span style='background: #F0ADAD'>        case Some(exception) if ignoreException(exception) =&gt;
+</span>237 <span style=''></span><span style='background: #F0ADAD'>          Future.successful(CircuitSuccess(defaultAction))
+</span>238 <span style=''></span><span style='background: #F0ADAD'>        case Some(exception) =&gt; Future.successful(CircuitFailure(exception))
+</span>239 <span style=''></span><span style='background: #F0ADAD'>        case None =&gt;
+</span>240 <span style=''></span><span style='background: #F0ADAD'>          Future.successful(
+</span>241 <span style=''></span><span style='background: #F0ADAD'>            CircuitFailure(InvalidEvalCircuitException(name, block))
+</span>242 <span style=''></span><span style='background: #F0ADAD'>          )
+</span>243 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
+</span>244 <span style=''>  }
+</span>245 <span style=''>}
+</span>246 <span style=''>
+</span>247 <span style=''>object Circuit {
+</span>248 <span style=''>  case class InvalidEvalCircuitException[R](name: String, evaluated: R)
+</span>249 <span style=''>      extends Exception(s&quot;[$name-invalid-evaluation] value = $evaluated&quot;)
+</span>250 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          98
+        </td>
+        <td>
+          1202
+          -
+          1246
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.logging.Logger.info
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.logger.info((&quot;[&quot;.+(Circuit.this.name).+(&quot;] [&quot;).+(new java.util.Date()).+(&quot;] &quot;).+(msg): String))
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          46
+        </td>
+        <td>
+          1294
+          -
+          1314
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.&lt;init&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          new java.util.concurrent.atomic.AtomicInteger(0)
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          136
+        </td>
+        <td>
+          1344
+          -
+          1373
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicLong.&lt;init&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          new java.util.concurrent.atomic.AtomicLong(9223372036854775807L)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          77
+        </td>
+        <td>
+          1430
+          -
+          1449
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.Closed
+        </td>
+        <td style="background: #AEF1AE">
+          CircuitState.Closed
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          48
+        </td>
+        <td>
+          1396
+          -
+          1450
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.&lt;init&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          new java.util.concurrent.atomic.AtomicReference[com.lprakashv.resilience4s.circuitbreaker.CircuitState](CircuitState.Closed)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          150
+        </td>
+        <td>
+          1500
+          -
+          1520
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.&lt;init&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          new java.util.concurrent.atomic.AtomicInteger(0)
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          30
+        </td>
+        <td>
+          1524
+          -
+          1909
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.Timer.scheduleAtFixedRate
+        </td>
+        <td style="background: #AEF1AE">
+          new java.util.Timer((&quot;&quot;.+(Circuit.this.name).+(&quot;-circuit-opener&quot;): String)).scheduleAtFixedRate({
+  final class $anon extends java.util.TimerTask {
+    def &lt;init&gt;(): &lt;$anon: java.util.TimerTask&gt; = {
+      $anon.super.&lt;init&gt;();
+      ()
+    };
+    override def run(): Unit = Circuit.this.state.get() match {
+      case com.lprakashv.resilience4s.circuitbreaker.CircuitState.Open if java.lang.System.currentTimeMillis().-(Circuit.this.lastOpenTime.get()).&gt;(Circuit.this.timeout.toMillis) =&gt; {
+        Circuit.this.circuitLogger(&quot;Max open timeout reached.&quot;);
+        Circuit.this.halfOpenCircuit()
+      }
+      case _ =&gt; ()
+    }
+  };
+  new $anon()
+}, 0L, 10L)
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          49
+        </td>
+        <td>
+          1584
+          -
+          1587
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.$anon.&lt;init&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          new $anon()
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          87
+        </td>
+        <td>
+          1633
+          -
+          1644
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.get
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.state.get()
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          29
+        </td>
+        <td>
+          1731
+          -
+          1749
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicLong.get
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.lastOpenTime.get()
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          130
+        </td>
+        <td>
+          1752
+          -
+          1768
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          scala.concurrent.duration.Duration.toMillis
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.timeout.toMillis
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          96
+        </td>
+        <td>
+          1687
+          -
+          1768
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Long.&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          java.lang.System.currentTimeMillis().-(Circuit.this.lastOpenTime.get()).&gt;(Circuit.this.timeout.toMillis)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          39
+        </td>
+        <td>
+          1783
+          -
+          1825
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Max open timeout reached.&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          135
+        </td>
+        <td>
+          1836
+          -
+          1853
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.halfOpenCircuit
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.halfOpenCircuit()
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          76
+        </td>
+        <td>
+          1872
+          -
+          1874
+        </td>
+        <td>
+          Literal
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          ()
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          145
+        </td>
+        <td>
+          1894
+          -
+          1896
+        </td>
+        <td>
+          Literal
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          0L
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          85
+        </td>
+        <td>
+          1902
+          -
+          1905
+        </td>
+        <td>
+          Literal
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          10L
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          131
+        </td>
+        <td>
+          1942
+          -
+          1953
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.get
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.state.get()
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2008
+          -
+          2019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.get
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.state.get()
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          45
+        </td>
+        <td>
+          2051
+          -
+          2070
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleClosed
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.handleClosed(block)
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          133
+        </td>
+        <td>
+          2094
+          -
+          2115
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleHalfOpen
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.handleHalfOpen(block)
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          80
+        </td>
+        <td>
+          2139
+          -
+          2149
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleOpen
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.handleOpen
+        </td>
+      </tr><tr>
+        <td>
+          68
+        </td>
+        <td>
+          10
+        </td>
+        <td>
+          2235
+          -
+          2246
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.get
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.state.get()
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          149
+        </td>
+        <td>
+          2278
+          -
+          2302
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleClosedAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleClosedAsync(block)
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          93
+        </td>
+        <td>
+          2326
+          -
+          2352
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleHalfOpenAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleHalfOpenAsync(block)
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          32
+        </td>
+        <td>
+          2394
+          -
+          2404
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleOpen
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.handleOpen
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          125
+        </td>
+        <td>
+          2376
+          -
+          2405
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #AEF1AE">
+          scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]](Circuit.this.handleOpen)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          99
+        </td>
+        <td>
+          2459
+          -
+          2494
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Opening circuit...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          43
+        </td>
+        <td>
+          2509
+          -
+          2513
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.Open
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.Open
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          141
+        </td>
+        <td>
+          2499
+          -
+          2514
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.state.set(com.lprakashv.resilience4s.circuitbreaker.CircuitState.Open)
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          82
+        </td>
+        <td>
+          2536
+          -
+          2562
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.lang.System.currentTimeMillis
+        </td>
+        <td style="background: #AEF1AE">
+          java.lang.System.currentTimeMillis()
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          21
+        </td>
+        <td>
+          2519
+          -
+          2563
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicLong.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.lastOpenTime.set(java.lang.System.currentTimeMillis())
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          148
+        </td>
+        <td>
+          2568
+          -
+          2601
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Circuit is open.&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          94
+        </td>
+        <td>
+          2650
+          -
+          2685
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Closing circuit...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          128
+        </td>
+        <td>
+          2690
+          -
+          2707
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.state.set(com.lprakashv.resilience4s.circuitbreaker.CircuitState.Closed)
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          27
+        </td>
+        <td>
+          2700
+          -
+          2706
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.Closed
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.Closed
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          97
+        </td>
+        <td>
+          2712
+          -
+          2743
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicLong.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.lastOpenTime.set(9223372036854775807L)
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          42
+        </td>
+        <td>
+          2748
+          -
+          2784
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.closedConsecutiveFailureCount.set(0)
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          142
+        </td>
+        <td>
+          2789
+          -
+          2824
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Circuit is closed.&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          74
+        </td>
+        <td>
+          2876
+          -
+          2916
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Half-opening circuit...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          146
+        </td>
+        <td>
+          2921
+          -
+          2940
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicReference.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.state.set(com.lprakashv.resilience4s.circuitbreaker.CircuitState.HalfOpen)
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          20
+        </td>
+        <td>
+          2931
+          -
+          2939
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.HalfOpen
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitState.HalfOpen
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          91
+        </td>
+        <td>
+          2945
+          -
+          2984
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.halfOpenConsecutiveFailuresCount.set(0)
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          28
+        </td>
+        <td>
+          2989
+          -
+          3027
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger(&quot;Circuit is half-open.&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          119
+        </td>
+        <td>
+          3099
+          -
+          3109
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.util.Try.apply
+        </td>
+        <td style="background: #AEF1AE">
+          scala.util.Try.apply[R](block)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          73
+        </td>
+        <td>
+          3159
+          -
+          3288
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailure
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.handleFailure(block, scala.`package`.Left.apply[Throwable, Nothing](exception), Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          56
+        </td>
+        <td>
+          3201
+          -
+          3216
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.util.Left.apply
+        </td>
+        <td style="background: #AEF1AE">
+          scala.`package`.Left.apply[Throwable, Nothing](exception)
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          44
+        </td>
+        <td>
+          3228
+          -
+          3257
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.closedConsecutiveFailureCount
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.closedConsecutiveFailureCount
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          132
+        </td>
+        <td>
+          3269
+          -
+          3278
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.threshold
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.threshold
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          16
+        </td>
+        <td>
+          3318
+          -
+          3335
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Function1.apply
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.failedWhen.apply(value)
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          120
+        </td>
+        <td>
+          3347
+          -
+          3473
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailure
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailure(block, scala.`package`.Right.apply[Nothing, R](value), Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          147
+        </td>
+        <td>
+          3389
+          -
+          3401
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.util.Right.apply
+        </td>
+        <td style="background: #F0ADAD">
+          scala.`package`.Right.apply[Nothing, R](value)
+        </td>
+      </tr><tr>
+        <td>
+          110
+        </td>
+        <td>
+          92
+        </td>
+        <td>
+          3413
+          -
+          3442
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.closedConsecutiveFailureCount
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.closedConsecutiveFailureCount
+        </td>
+      </tr><tr>
+        <td>
+          111
+        </td>
+        <td>
+          24
+        </td>
+        <td>
+          3454
+          -
+          3463
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.threshold
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.threshold
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          64
+        </td>
+        <td>
+          3511
+          -
+          3547
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.set
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.closedConsecutiveFailureCount.set(0)
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          41
+        </td>
+        <td>
+          3556
+          -
+          3577
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value)
+        </td>
+      </tr><tr>
+        <td>
+          120
+        </td>
+        <td>
+          134
+        </td>
+        <td>
+          3657
+          -
+          3667
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.util.Try.apply
+        </td>
+        <td style="background: #AEF1AE">
+          scala.util.Try.apply[R](block)
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          95
+        </td>
+        <td>
+          3717
+          -
+          3858
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailure
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.handleFailure(block, scala.`package`.Left.apply[Throwable, Nothing](exception), Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          68
+        </td>
+        <td>
+          3759
+          -
+          3774
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.util.Left.apply
+        </td>
+        <td style="background: #AEF1AE">
+          scala.`package`.Left.apply[Throwable, Nothing](exception)
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          17
+        </td>
+        <td>
+          3786
+          -
+          3818
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.halfOpenConsecutiveFailuresCount
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.halfOpenConsecutiveFailuresCount
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          105
+        </td>
+        <td>
+          3830
+          -
+          3848
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.maxAllowedHalfOpen
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.maxAllowedHalfOpen
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          25
+        </td>
+        <td>
+          3888
+          -
+          3905
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Function1.apply
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.failedWhen.apply(value)
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          144
+        </td>
+        <td>
+          3917
+          -
+          4055
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailure
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailure(block, scala.`package`.Right.apply[Nothing, R](value), Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          117
+        </td>
+        <td>
+          3959
+          -
+          3971
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.util.Right.apply
+        </td>
+        <td style="background: #F0ADAD">
+          scala.`package`.Right.apply[Nothing, R](value)
+        </td>
+      </tr><tr>
+        <td>
+          132
+        </td>
+        <td>
+          65
+        </td>
+        <td>
+          3983
+          -
+          4015
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.halfOpenConsecutiveFailuresCount
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.halfOpenConsecutiveFailuresCount
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          47
+        </td>
+        <td>
+          4027
+          -
+          4045
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.maxAllowedHalfOpen
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.maxAllowedHalfOpen
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          69
+        </td>
+        <td>
+          4093
+          -
+          4107
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.closeCircuit
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.closeCircuit()
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          22
+        </td>
+        <td>
+          4116
+          -
+          4137
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value)
+        </td>
+      </tr><tr>
+        <td>
+          146
+        </td>
+        <td>
+          114
+        </td>
+        <td>
+          4288
+          -
+          4305
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Function1.apply
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.failedWhen.apply(value)
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          140
+        </td>
+        <td>
+          4319
+          -
+          4471
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailureAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailureAsync(scala.concurrent.Future.successful[R](value), scala.None, Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          40
+        </td>
+        <td>
+          4319
+          -
+          4471
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailureAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailureAsync(scala.concurrent.Future.successful[R](value), scala.None, Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+        </td>
+      </tr><tr>
+        <td>
+          148
+        </td>
+        <td>
+          90
+        </td>
+        <td>
+          4351
+          -
+          4375
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[R](value)
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          37
+        </td>
+        <td>
+          4389
+          -
+          4393
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          scala.None
+        </td>
+        <td style="background: #F0ADAD">
+          scala.None
+        </td>
+      </tr><tr>
+        <td>
+          150
+        </td>
+        <td>
+          122
+        </td>
+        <td>
+          4407
+          -
+          4436
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.closedConsecutiveFailureCount
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.closedConsecutiveFailureCount
+        </td>
+      </tr><tr>
+        <td>
+          151
+        </td>
+        <td>
+          67
+        </td>
+        <td>
+          4450
+          -
+          4459
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.threshold
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.threshold
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          88
+        </td>
+        <td>
+          4487
+          -
+          4596
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          {
+  Circuit.this.closedConsecutiveFailureCount.set(0);
+  scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value))
+}
+        </td>
+      </tr><tr>
+        <td>
+          154
+        </td>
+        <td>
+          83
+        </td>
+        <td>
+          4499
+          -
+          4535
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.set
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.closedConsecutiveFailureCount.set(0)
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          14
+        </td>
+        <td>
+          4564
+          -
+          4585
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value)
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          115
+        </td>
+        <td>
+          4546
+          -
+          4586
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value))
+        </td>
+      </tr><tr>
+        <td>
+          157
+        </td>
+        <td>
+          33
+        </td>
+        <td>
+          4605
+          -
+          4607
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.ec
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.ec
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          106
+        </td>
+        <td>
+          4244
+          -
+          4818
+        </td>
+        <td>
+          ApplyToImplicitArgs
+        </td>
+        <td>
+          scala.concurrent.Future.recoverWith
+        </td>
+        <td style="background: #F0ADAD">
+          block.flatMap[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]](((value: R) =&gt; if (Circuit.this.failedWhen.apply(value))
+  Circuit.this.handleFailureAsync(scala.concurrent.Future.successful[R](value), scala.None, Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+else
+  {
+    Circuit.this.closedConsecutiveFailureCount.set(0);
+    scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value))
+  }))(Circuit.this.ec).recoverWith[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]](({
+  @SerialVersionUID(value = 0) final &lt;synthetic&gt; class $anonfun extends scala.runtime.AbstractPartialFunction[Throwable,scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]] with java.io.Serializable {
+    def &lt;init&gt;(): &lt;$anon: Throwable =&gt; scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]&gt; = {
+      $anonfun.super.&lt;init&gt;();
+      ()
+    };
+    final override def applyOrElse[A1 &lt;: Throwable, B1 &gt;: scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]](x1: A1, default: A1 =&gt; B1): B1 = ((x1.asInstanceOf[Throwable]: Throwable): Throwable @unchecked) match {
+      case (exception @ _) =&gt; Circuit.this.handleFailureAsync(block, scala.Some.apply[Throwable](exception), Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+      case (defaultCase$ @ _) =&gt; default.apply(x1)
+    };
+    final def isDefinedAt(x1: Throwable): Boolean = ((x1.asInstanceOf[Throwable]: Throwable): Throwable @unchecked) match {
+      case (exception @ _) =&gt; true
+      case (defaultCase$ @ _) =&gt; false
+    }
+  };
+  new $anonfun()
+}: PartialFunction[Throwable,scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]]))(Circuit.this.ec)
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          70
+        </td>
+        <td>
+          4628
+          -
+          4628
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.$anonfun.&lt;init&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          new $anonfun()
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          15
+        </td>
+        <td>
+          4628
+          -
+          4628
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.ec
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.ec
+        </td>
+      </tr><tr>
+        <td>
+          160
+        </td>
+        <td>
+          137
+        </td>
+        <td>
+          4666
+          -
+          4810
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailureAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailureAsync(block, scala.Some.apply[Throwable](exception), Circuit.this.closedConsecutiveFailureCount, Circuit.this.threshold)
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          123
+        </td>
+        <td>
+          4717
+          -
+          4732
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Some.apply
+        </td>
+        <td style="background: #F0ADAD">
+          scala.Some.apply[Throwable](exception)
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          62
+        </td>
+        <td>
+          4746
+          -
+          4775
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.closedConsecutiveFailureCount
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.closedConsecutiveFailureCount
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          5
+        </td>
+        <td>
+          4789
+          -
+          4798
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.threshold
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.threshold
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          89
+        </td>
+        <td>
+          4965
+          -
+          4982
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Function1.apply
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.failedWhen.apply(value)
+        </td>
+      </tr><tr>
+        <td>
+          175
+        </td>
+        <td>
+          71
+        </td>
+        <td>
+          4996
+          -
+          5160
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailureAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailureAsync(scala.concurrent.Future.successful[R](value), scala.None, Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+        </td>
+      </tr><tr>
+        <td>
+          175
+        </td>
+        <td>
+          139
+        </td>
+        <td>
+          4996
+          -
+          5160
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailureAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailureAsync(scala.concurrent.Future.successful[R](value), scala.None, Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+        </td>
+      </tr><tr>
+        <td>
+          176
+        </td>
+        <td>
+          34
+        </td>
+        <td>
+          5028
+          -
+          5052
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[R](value)
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          118
+        </td>
+        <td>
+          5066
+          -
+          5070
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          scala.None
+        </td>
+        <td style="background: #F0ADAD">
+          scala.None
+        </td>
+      </tr><tr>
+        <td>
+          178
+        </td>
+        <td>
+          63
+        </td>
+        <td>
+          5084
+          -
+          5116
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.halfOpenConsecutiveFailuresCount
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.halfOpenConsecutiveFailuresCount
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          3
+        </td>
+        <td>
+          5130
+          -
+          5148
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.maxAllowedHalfOpen
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.maxAllowedHalfOpen
+        </td>
+      </tr><tr>
+        <td>
+          181
+        </td>
+        <td>
+          36
+        </td>
+        <td>
+          5176
+          -
+          5263
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          {
+  Circuit.this.closeCircuit();
+  scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value))
+}
+        </td>
+      </tr><tr>
+        <td>
+          182
+        </td>
+        <td>
+          11
+        </td>
+        <td>
+          5188
+          -
+          5202
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.closeCircuit
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.closeCircuit()
+        </td>
+      </tr><tr>
+        <td>
+          183
+        </td>
+        <td>
+          86
+        </td>
+        <td>
+          5213
+          -
+          5253
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value))
+        </td>
+      </tr><tr>
+        <td>
+          183
+        </td>
+        <td>
+          107
+        </td>
+        <td>
+          5231
+          -
+          5252
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value)
+        </td>
+      </tr><tr>
+        <td>
+          185
+        </td>
+        <td>
+          116
+        </td>
+        <td>
+          5272
+          -
+          5274
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.ec
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.ec
+        </td>
+      </tr><tr>
+        <td>
+          186
+        </td>
+        <td>
+          54
+        </td>
+        <td>
+          4921
+          -
+          5497
+        </td>
+        <td>
+          ApplyToImplicitArgs
+        </td>
+        <td>
+          scala.concurrent.Future.recoverWith
+        </td>
+        <td style="background: #F0ADAD">
+          block.flatMap[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]](((value: R) =&gt; if (Circuit.this.failedWhen.apply(value))
+  Circuit.this.handleFailureAsync(scala.concurrent.Future.successful[R](value), scala.None, Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+else
+  {
+    Circuit.this.closeCircuit();
+    scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](value))
+  }))(Circuit.this.ec).recoverWith[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]](({
+  @SerialVersionUID(value = 0) final &lt;synthetic&gt; class $anonfun extends scala.runtime.AbstractPartialFunction[Throwable,scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]] with java.io.Serializable {
+    def &lt;init&gt;(): &lt;$anon: Throwable =&gt; scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]&gt; = {
+      $anonfun.super.&lt;init&gt;();
+      ()
+    };
+    final override def applyOrElse[A1 &lt;: Throwable, B1 &gt;: scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]](x1: A1, default: A1 =&gt; B1): B1 = ((x1.asInstanceOf[Throwable]: Throwable): Throwable @unchecked) match {
+      case (exception @ _) =&gt; Circuit.this.handleFailureAsync(block, scala.Some.apply[Throwable](exception), Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+      case (defaultCase$ @ _) =&gt; default.apply(x1)
+    };
+    final def isDefinedAt(x1: Throwable): Boolean = ((x1.asInstanceOf[Throwable]: Throwable): Throwable @unchecked) match {
+      case (exception @ _) =&gt; true
+      case (defaultCase$ @ _) =&gt; false
+    }
+  };
+  new $anonfun()
+}: PartialFunction[Throwable,scala.concurrent.Future[com.lprakashv.resilience4s.circuitbreaker.CircuitResult[R]]]))(Circuit.this.ec)
+        </td>
+      </tr><tr>
+        <td>
+          186
+        </td>
+        <td>
+          9
+        </td>
+        <td>
+          5295
+          -
+          5295
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.$anonfun.&lt;init&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          new $anonfun()
+        </td>
+      </tr><tr>
+        <td>
+          186
+        </td>
+        <td>
+          111
+        </td>
+        <td>
+          5295
+          -
+          5295
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.ec
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.ec
+        </td>
+      </tr><tr>
+        <td>
+          188
+        </td>
+        <td>
+          81
+        </td>
+        <td>
+          5333
+          -
+          5489
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.handleFailureAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.handleFailureAsync(block, scala.Some.apply[Throwable](exception), Circuit.this.halfOpenConsecutiveFailuresCount, Circuit.this.maxAllowedHalfOpen)
+        </td>
+      </tr><tr>
+        <td>
+          190
+        </td>
+        <td>
+          60
+        </td>
+        <td>
+          5384
+          -
+          5399
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Some.apply
+        </td>
+        <td style="background: #F0ADAD">
+          scala.Some.apply[Throwable](exception)
+        </td>
+      </tr><tr>
+        <td>
+          191
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          5413
+          -
+          5445
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.halfOpenConsecutiveFailuresCount
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.halfOpenConsecutiveFailuresCount
+        </td>
+      </tr><tr>
+        <td>
+          192
+        </td>
+        <td>
+          138
+        </td>
+        <td>
+          5459
+          -
+          5477
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.maxAllowedHalfOpen
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.maxAllowedHalfOpen
+        </td>
+      </tr><tr>
+        <td>
+          198
+        </td>
+        <td>
+          38
+        </td>
+        <td>
+          5569
+          -
+          5582
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.defaultAction
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.defaultAction
+        </td>
+      </tr><tr>
+        <td>
+          198
+        </td>
+        <td>
+          127
+        </td>
+        <td>
+          5554
+          -
+          5583
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](Circuit.this.defaultAction)
+        </td>
+      </tr><tr>
+        <td>
+          205
+        </td>
+        <td>
+          61
+        </td>
+        <td>
+          5854
+          -
+          5885
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.incrementAndGet
+        </td>
+        <td style="background: #AEF1AE">
+          atomicCounter.incrementAndGet()
+        </td>
+      </tr><tr>
+        <td>
+          206
+        </td>
+        <td>
+          6
+        </td>
+        <td>
+          5890
+          -
+          5983
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.circuitLogger((&quot;[&quot;.+(Circuit.this.state.get()).+(&quot;-error-count = &quot;).+(atomicCounter).+(&quot;] &quot;).+(throwableOrValue): String))
+        </td>
+      </tr><tr>
+        <td>
+          209
+        </td>
+        <td>
+          113
+        </td>
+        <td>
+          6027
+          -
+          6075
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          {
+  Circuit.this.openCircuit();
+  Circuit.this.execute(block)
+}
+        </td>
+      </tr><tr>
+        <td>
+          209
+        </td>
+        <td>
+          143
+        </td>
+        <td>
+          5992
+          -
+          6025
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Int.&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          currentFailureCount.&gt;(maxFailures)
+        </td>
+      </tr><tr>
+        <td>
+          210
+        </td>
+        <td>
+          84
+        </td>
+        <td>
+          6035
+          -
+          6048
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.openCircuit
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.openCircuit()
+        </td>
+      </tr><tr>
+        <td>
+          211
+        </td>
+        <td>
+          19
+        </td>
+        <td>
+          6055
+          -
+          6069
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.execute
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.execute(block)
+        </td>
+      </tr><tr>
+        <td>
+          213
+        </td>
+        <td>
+          13
+        </td>
+        <td>
+          6087
+          -
+          6384
+        </td>
+        <td>
+          Match
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #AEF1AE">
+          throwableOrValue match {
+  case (value: Throwable)scala.util.Left[Throwable,R]((exception @ _)) if Circuit.this.ignoreException.apply(exception) =&gt; {
+    Circuit.this.openCircuit();
+    Circuit.this.execute(block)
+  }
+  case (value: Throwable)scala.util.Left[Throwable,R]((exception @ _)) =&gt; com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](exception)
+  case (value: R)scala.util.Right[Throwable,R]((value @ _)) =&gt; com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[R](Circuit.this.name, value))
+}
+        </td>
+      </tr><tr>
+        <td>
+          214
+        </td>
+        <td>
+          55
+        </td>
+        <td>
+          6144
+          -
+          6170
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Function1.apply
+        </td>
+        <td style="background: #AEF1AE">
+          Circuit.this.ignoreException.apply(exception)
+        </td>
+      </tr><tr>
+        <td>
+          215
+        </td>
+        <td>
+          35
+        </td>
+        <td>
+          6184
+          -
+          6197
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.openCircuit
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.openCircuit()
+        </td>
+      </tr><tr>
+        <td>
+          216
+        </td>
+        <td>
+          129
+        </td>
+        <td>
+          6208
+          -
+          6222
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.execute
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.execute(block)
+        </td>
+      </tr><tr>
+        <td>
+          217
+        </td>
+        <td>
+          58
+        </td>
+        <td>
+          6255
+          -
+          6280
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply
+        </td>
+        <td style="background: #AEF1AE">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](exception)
+        </td>
+      </tr><tr>
+        <td>
+          219
+        </td>
+        <td>
+          104
+        </td>
+        <td>
+          6335
+          -
+          6375
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[R](Circuit.this.name, value)
+        </td>
+      </tr><tr>
+        <td>
+          219
+        </td>
+        <td>
+          8
+        </td>
+        <td>
+          6363
+          -
+          6367
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.name
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.name
+        </td>
+      </tr><tr>
+        <td>
+          219
+        </td>
+        <td>
+          79
+        </td>
+        <td>
+          6320
+          -
+          6376
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[R](Circuit.this.name, value))
+        </td>
+      </tr><tr>
+        <td>
+          227
+        </td>
+        <td>
+          112
+        </td>
+        <td>
+          6686
+          -
+          6717
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          java.util.concurrent.atomic.AtomicInteger.incrementAndGet
+        </td>
+        <td style="background: #F0ADAD">
+          atomicCounter.incrementAndGet()
+        </td>
+      </tr><tr>
+        <td>
+          228
+        </td>
+        <td>
+          52
+        </td>
+        <td>
+          6722
+          -
+          6813
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.circuitLogger
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.circuitLogger((&quot;[&quot;.+(Circuit.this.state.get()).+(&quot;-error-count = &quot;).+(atomicCounter).+(&quot;] &quot;).+(maybeException): String))
+        </td>
+      </tr><tr>
+        <td>
+          231
+        </td>
+        <td>
+          31
+        </td>
+        <td>
+          6822
+          -
+          6855
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Int.&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          currentFailureCount.&gt;(maxFailures)
+        </td>
+      </tr><tr>
+        <td>
+          231
+        </td>
+        <td>
+          7
+        </td>
+        <td>
+          6857
+          -
+          6910
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          {
+  Circuit.this.openCircuit();
+  Circuit.this.executeAsync(block)
+}
+        </td>
+      </tr><tr>
+        <td>
+          232
+        </td>
+        <td>
+          124
+        </td>
+        <td>
+          6865
+          -
+          6878
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.openCircuit
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.openCircuit()
+        </td>
+      </tr><tr>
+        <td>
+          233
+        </td>
+        <td>
+          57
+        </td>
+        <td>
+          6885
+          -
+          6904
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.executeAsync
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.executeAsync(block)
+        </td>
+      </tr><tr>
+        <td>
+          235
+        </td>
+        <td>
+          72
+        </td>
+        <td>
+          6922
+          -
+          7281
+        </td>
+        <td>
+          Match
+        </td>
+        <td>
+          &lt;nosymbol&gt;
+        </td>
+        <td style="background: #F0ADAD">
+          maybeException match {
+  case (value: Throwable)Some[Throwable]((exception @ _)) if Circuit.this.ignoreException.apply(exception) =&gt; scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](Circuit.this.defaultAction))
+  case (value: Throwable)Some[Throwable]((exception @ _)) =&gt; scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](exception))
+  case scala.None =&gt; scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[scala.concurrent.Future[R]](Circuit.this.name, block)))
+}
+        </td>
+      </tr><tr>
+        <td>
+          236
+        </td>
+        <td>
+          102
+        </td>
+        <td>
+          6977
+          -
+          7003
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.Function1.apply
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.ignoreException.apply(exception)
+        </td>
+      </tr><tr>
+        <td>
+          237
+        </td>
+        <td>
+          109
+        </td>
+        <td>
+          7017
+          -
+          7065
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](Circuit.this.defaultAction))
+        </td>
+      </tr><tr>
+        <td>
+          237
+        </td>
+        <td>
+          12
+        </td>
+        <td>
+          7035
+          -
+          7064
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess.apply[R](Circuit.this.defaultAction)
+        </td>
+      </tr><tr>
+        <td>
+          237
+        </td>
+        <td>
+          75
+        </td>
+        <td>
+          7050
+          -
+          7063
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.defaultAction
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.defaultAction
+        </td>
+      </tr><tr>
+        <td>
+          238
+        </td>
+        <td>
+          53
+        </td>
+        <td>
+          7116
+          -
+          7141
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](exception)
+        </td>
+      </tr><tr>
+        <td>
+          238
+        </td>
+        <td>
+          26
+        </td>
+        <td>
+          7098
+          -
+          7142
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](exception))
+        </td>
+      </tr><tr>
+        <td>
+          240
+        </td>
+        <td>
+          103
+        </td>
+        <td>
+          7174
+          -
+          7273
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scala.concurrent.Future.successful
+        </td>
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.successful[com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure[R]](com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[scala.concurrent.Future[R]](Circuit.this.name, block)))
+        </td>
+      </tr><tr>
+        <td>
+          241
+        </td>
+        <td>
+          59
+        </td>
+        <td>
+          7220
+          -
+          7260
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[scala.concurrent.Future[R]](Circuit.this.name, block)
+        </td>
+      </tr><tr>
+        <td>
+          241
+        </td>
+        <td>
+          2
+        </td>
+        <td>
+          7205
+          -
+          7261
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply
+        </td>
+        <td style="background: #F0ADAD">
+          com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure.apply[R](com.lprakashv.resilience4s.circuitbreaker.Circuit.InvalidEvalCircuitException.apply[scala.concurrent.Future[R]](Circuit.this.name, block))
+        </td>
+      </tr><tr>
+        <td>
+          241
+        </td>
+        <td>
+          126
+        </td>
+        <td>
+          7248
+          -
+          7252
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          com.lprakashv.resilience4s.circuitbreaker.Circuit.name
+        </td>
+        <td style="background: #F0ADAD">
+          Circuit.this.name
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

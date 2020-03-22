@@ -1,0 +1,621 @@
+<scoverage 
+statement-count="152" statements-invoked="80" statement-rate="52.63" branch-rate="25.00" version="1.0" timestamp="1584905823223">
+    <packages>
+        <package 
+        name="com.lprakashv.resilience4s.circuitbreaker" statement-count="152" statements-invoked="80" statement-rate="52.63">
+            <classes>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.Circuit" filename="com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" statement-count="139" statements-invoked="68" statement-rate="48.92" branch-rate="25.00">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleClosed" statement-count="12" statements-invoked="8" statement-rate="66.67" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3413" end="3442" line="110" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3099" end="3109" line="98" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3556" end="3577" line="115" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3228" end="3257" line="103" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3201" end="3216" line="102" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3511" end="3547" line="114" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3159" end="3288" line="100" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3318" end="3335" line="106" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3389" end="3401" line="109" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3347" end="3473" line="107" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3269" end="3278" line="104" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosed" start="3454" end="3463" line="111" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleFailureAsync" statement-count="17" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7220" end="7260" line="241" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7116" end="7141" line="238" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7098" end="7142" line="238" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7205" end="7261" line="241" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6865" end="6878" line="232" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7017" end="7065" line="237" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7174" end="7273" line="240" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6822" end="6855" line="231" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6686" end="6717" line="227" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6857" end="6910" line="231" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6722" end="6813" line="228" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6922" end="7281" line="235" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7248" end="7252" line="241" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6885" end="6904" line="233" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7035" end="7064" line="237" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="6977" end="7003" line="236" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailureAsync" start="7050" end="7063" line="237" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleHalfOpen" statement-count="12" statements-invoked="8" statement-rate="66.67" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3717" end="3858" line="122" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3759" end="3774" line="124" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3657" end="3667" line="120" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3786" end="3818" line="125" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="4027" end="4045" line="133" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3983" end="4015" line="132" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="4116" end="4137" line="137" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3888" end="3905" line="128" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3830" end="3848" line="126" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="4093" end="4107" line="136" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3917" end="4055" line="129" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpen" start="3959" end="3971" line="131" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/closeCircuit" statement-count="6" statements-invoked="6" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="closeCircuit" start="2690" end="2707" line="84" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="closeCircuit" start="2789" end="2824" line="87" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="closeCircuit" start="2650" end="2685" line="83" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="closeCircuit" start="2712" end="2743" line="85" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="closeCircuit" start="2700" end="2706" line="84" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="closeCircuit" start="2748" end="2784" line="86" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/run" statement-count="11" statements-invoked="11" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1731" end="1749" line="47" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1894" end="1896" line="53" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1902" end="1905" line="54" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1584" end="1587" line="43" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1752" end="1768" line="47" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1872" end="1874" line="50" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1633" end="1644" line="44" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1687" end="1768" line="47" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1836" end="1853" line="49" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1524" end="1909" line="42" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="run" start="1783" end="1825" line="48" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleFailure" statement-count="14" statements-invoked="9" statement-rate="64.29" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6335" end="6375" line="219" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6027" end="6075" line="209" branch="true" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6184" end="6197" line="215" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6363" end="6367" line="219" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6144" end="6170" line="214" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6255" end="6280" line="217" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6087" end="6384" line="213" branch="true" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6320" end="6376" line="219" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="5854" end="5885" line="205" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6055" end="6069" line="211" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6208" end="6222" line="216" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="6035" end="6048" line="210" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="5890" end="5983" line="206" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleFailure" start="5992" end="6025" line="209" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/executeAsync" statement-count="5" statements-invoked="3" statement-rate="60.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="executeAsync" start="2394" end="2404" line="71" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="executeAsync" start="2278" end="2302" line="69" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="executeAsync" start="2376" end="2405" line="71" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="executeAsync" start="2235" end="2246" line="68" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="executeAsync" start="2326" end="2352" line="70" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleOpen" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleOpen" start="5569" end="5582" line="198" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleOpen" start="5554" end="5583" line="198" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/halfOpenCircuit" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="halfOpenCircuit" start="2921" end="2940" line="92" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="halfOpenCircuit" start="2876" end="2916" line="91" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="halfOpenCircuit" start="2931" end="2939" line="92" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="halfOpenCircuit" start="2945" end="2984" line="93" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="halfOpenCircuit" start="2989" end="3027" line="94" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/getState" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="getState" start="1942" end="1953" line="57" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleClosedAsync" statement-count="19" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4666" end="4810" line="160" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4499" end="4535" line="154" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4407" end="4436" line="150" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4319" end="4471" line="147" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4746" end="4775" line="163" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4789" end="4798" line="164" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4564" end="4585" line="155" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4244" end="4818" line="158" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4546" end="4586" line="155" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4450" end="4459" line="151" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4319" end="4471" line="147" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4487" end="4596" line="153" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4628" end="4628" line="158" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4389" end="4393" line="149" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4717" end="4732" line="162" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4288" end="4305" line="146" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4351" end="4375" line="148" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4628" end="4628" line="158" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleClosedAsync" start="4605" end="4607" line="157" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/&lt;none&gt;" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="&lt;none&gt;" start="1430" end="1449" line="39" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="&lt;none&gt;" start="1294" end="1314" line="37" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="&lt;none&gt;" start="1344" end="1373" line="38" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="&lt;none&gt;" start="1500" end="1520" line="40" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="&lt;none&gt;" start="1396" end="1450" line="39" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleHalfOpenAsync" statement-count="19" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5213" end="5253" line="183" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="4965" end="4982" line="174" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5272" end="5274" line="185" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="4996" end="5160" line="175" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5231" end="5252" line="183" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5188" end="5202" line="182" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5066" end="5070" line="177" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="4996" end="5160" line="175" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5413" end="5445" line="191" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5028" end="5052" line="176" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5459" end="5477" line="192" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5384" end="5399" line="190" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5084" end="5116" line="178" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="4921" end="5497" line="186" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5333" end="5489" line="188" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5176" end="5263" line="181" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5295" end="5295" line="186" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5130" end="5148" line="179" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="handleHalfOpenAsync" start="5295" end="5295" line="186" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/openCircuit" statement-count="6" statements-invoked="6" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="openCircuit" start="2536" end="2562" line="78" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="openCircuit" start="2568" end="2601" line="79" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="openCircuit" start="2509" end="2513" line="77" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="openCircuit" start="2499" end="2514" line="77" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="openCircuit" start="2459" end="2494" line="76" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="openCircuit" start="2519" end="2563" line="78" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/execute" statement-count="4" statements-invoked="4" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="execute" start="2139" end="2149" line="63" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="execute" start="2094" end="2115" line="62" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="execute" start="2008" end="2019" line="60" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="execute" start="2051" end="2070" line="61" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/circuitLogger" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="Circuit" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.Circuit" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" method="circuitLogger" start="1202" end="1246" line="35" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.BlockExtensions" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" statement-count="3" statements-invoked="3" statement-rate="100.00" branch-rate="100.00">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/BlockExtensions/execute" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="BlockExtensions" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.BlockExtensions" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" method="execute" start="241" end="257" line="8" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="BlockExtensions" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.BlockExtensions" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" method="execute" start="251" end="256" line="8" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/BlockExtensions/executeAsync" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="BlockExtensions" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.BlockExtensions" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" method="executeAsync" start="345" end="386" line="11" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/isSuccess" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitResult" class-type="Trait" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="isSuccess" start="309" end="330" line="11" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/toOption" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitResult" class-type="Trait" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="toOption" start="360" end="382" line="13" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/toEither" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitResult" class-type="Trait" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="toEither" start="525" end="540" line="17" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitResult" class-type="Trait" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="toEither" start="474" end="486" line="16" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/isFailed" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitResult" class-type="Trait" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="isFailed" start="260" end="280" line="9" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitSuccess/iterator" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitSuccess" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="iterator" start="680" end="701" line="23" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitSuccess" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="iterator" start="695" end="700" line="23" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitFailure/iterator" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="CircuitFailure" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" method="iterator" start="827" end="844" line="26" branch="false" invocation-count="1" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.AsyncBlockExtensions" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" statement-count="2" statements-invoked="1" statement-rate="50.00" branch-rate="100.00">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/AsyncBlockExtensions/executeAsync" statement-count="2" statements-invoked="1" statement-rate="50.00" branch-rate="100.00">
+                            <statements>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="AsyncBlockExtensions" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.AsyncBlockExtensions" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" method="executeAsync" start="575" end="596" line="21" branch="false" invocation-count="1" ignored="false">
+</statement>
+                                <statement 
+                                package="com.lprakashv.resilience4s.circuitbreaker" class="AsyncBlockExtensions" class-type="Class" full-class-name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.AsyncBlockExtensions" source="/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala/com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" method="executeAsync" start="590" end="595" line="21" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+            </classes>
+</package>
+    </packages>
+</scoverage>

@@ -1,0 +1,486 @@
+<?xml version="1.0"?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+<coverage 
+line-rate="0.53" lines-valid="152" lines-covered="80" branches-valid="8" branches-covered="2" branch-rate="0.25" complexity="0" version="1.0" timestamp="1584905823129">
+    <sources>
+        <source>--source</source>
+        <source>/Users/lpv0006/Desktop/WalmartRepos/resiliency4s/src/main/scala</source>
+    </sources>
+    <packages>
+        <package name="com.lprakashv.resilience4s.circuitbreaker" line-rate="0.53" branch-rate="0.25" complexity="0">
+            <classes>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.Circuit" filename="com/lprakashv/resilience4s/circuitbreaker/Circuit.scala" line-rate="0.49" branch-rate="0.25" complexity="0">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleClosed" signature="()V" line-rate="0.67" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="110" hits="0" branch="false"/>
+                                <line number="98" hits="1" branch="false"/>
+                                <line number="115" hits="1" branch="false"/>
+                                <line number="103" hits="1" branch="false"/>
+                                <line number="102" hits="1" branch="false"/>
+                                <line number="114" hits="1" branch="false"/>
+                                <line number="100" hits="1" branch="false"/>
+                                <line number="106" hits="1" branch="false"/>
+                                <line number="109" hits="0" branch="false"/>
+                                <line number="107" hits="0" branch="false"/>
+                                <line number="104" hits="1" branch="false"/>
+                                <line number="111" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleFailureAsync" signature="()V" line-rate="0.00" branch-rate="0.00" complexity="0">
+                            <lines>
+                                <line number="241" hits="0" branch="false"/>
+                                <line number="238" hits="0" branch="false"/>
+                                <line number="238" hits="0" branch="false"/>
+                                <line number="241" hits="0" branch="false"/>
+                                <line number="232" hits="0" branch="false"/>
+                                <line number="237" hits="0" branch="false"/>
+                                <line number="240" hits="0" branch="false"/>
+                                <line number="231" hits="0" branch="false"/>
+                                <line number="227" hits="0" branch="false"/>
+                                <line number="231" hits="0" branch="false"/>
+                                <line number="228" hits="0" branch="false"/>
+                                <line number="235" hits="0" branch="false"/>
+                                <line number="241" hits="0" branch="false"/>
+                                <line number="233" hits="0" branch="false"/>
+                                <line number="237" hits="0" branch="false"/>
+                                <line number="236" hits="0" branch="false"/>
+                                <line number="237" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleHalfOpen" signature="()V" line-rate="0.67" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="122" hits="1" branch="false"/>
+                                <line number="124" hits="1" branch="false"/>
+                                <line number="120" hits="1" branch="false"/>
+                                <line number="125" hits="1" branch="false"/>
+                                <line number="133" hits="0" branch="false"/>
+                                <line number="132" hits="0" branch="false"/>
+                                <line number="137" hits="1" branch="false"/>
+                                <line number="128" hits="1" branch="false"/>
+                                <line number="126" hits="1" branch="false"/>
+                                <line number="136" hits="1" branch="false"/>
+                                <line number="129" hits="0" branch="false"/>
+                                <line number="131" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/closeCircuit" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="84" hits="1" branch="false"/>
+                                <line number="87" hits="1" branch="false"/>
+                                <line number="83" hits="1" branch="false"/>
+                                <line number="85" hits="1" branch="false"/>
+                                <line number="84" hits="1" branch="false"/>
+                                <line number="86" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/run" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="47" hits="1" branch="false"/>
+                                <line number="53" hits="1" branch="false"/>
+                                <line number="54" hits="1" branch="false"/>
+                                <line number="43" hits="1" branch="false"/>
+                                <line number="47" hits="1" branch="false"/>
+                                <line number="50" hits="1" branch="false"/>
+                                <line number="44" hits="1" branch="false"/>
+                                <line number="47" hits="1" branch="false"/>
+                                <line number="49" hits="1" branch="false"/>
+                                <line number="42" hits="1" branch="false"/>
+                                <line number="48" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleFailure" signature="()V" line-rate="0.64" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="219" hits="0" branch="false"/>
+                                <line number="209" hits="1" branch="false"/>
+                                <line number="215" hits="0" branch="false"/>
+                                <line number="219" hits="0" branch="false"/>
+                                <line number="214" hits="1" branch="false"/>
+                                <line number="217" hits="1" branch="false"/>
+                                <line number="213" hits="1" branch="false"/>
+                                <line number="219" hits="0" branch="false"/>
+                                <line number="205" hits="1" branch="false"/>
+                                <line number="211" hits="1" branch="false"/>
+                                <line number="216" hits="0" branch="false"/>
+                                <line number="210" hits="1" branch="false"/>
+                                <line number="206" hits="1" branch="false"/>
+                                <line number="209" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/executeAsync" signature="()V" line-rate="0.60" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="71" hits="1" branch="false"/>
+                                <line number="69" hits="0" branch="false"/>
+                                <line number="71" hits="1" branch="false"/>
+                                <line number="68" hits="1" branch="false"/>
+                                <line number="70" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleOpen" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="198" hits="1" branch="false"/>
+                                <line number="198" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/halfOpenCircuit" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="92" hits="1" branch="false"/>
+                                <line number="91" hits="1" branch="false"/>
+                                <line number="92" hits="1" branch="false"/>
+                                <line number="93" hits="1" branch="false"/>
+                                <line number="94" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/getState" signature="()V" line-rate="0.00" branch-rate="0.00" complexity="0">
+                            <lines>
+                                <line number="57" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleClosedAsync" signature="()V" line-rate="0.00" branch-rate="0.00" complexity="0">
+                            <lines>
+                                <line number="160" hits="0" branch="false"/>
+                                <line number="154" hits="0" branch="false"/>
+                                <line number="150" hits="0" branch="false"/>
+                                <line number="147" hits="0" branch="false"/>
+                                <line number="163" hits="0" branch="false"/>
+                                <line number="164" hits="0" branch="false"/>
+                                <line number="155" hits="0" branch="false"/>
+                                <line number="158" hits="0" branch="false"/>
+                                <line number="155" hits="0" branch="false"/>
+                                <line number="151" hits="0" branch="false"/>
+                                <line number="147" hits="0" branch="false"/>
+                                <line number="153" hits="0" branch="false"/>
+                                <line number="158" hits="0" branch="false"/>
+                                <line number="149" hits="0" branch="false"/>
+                                <line number="162" hits="0" branch="false"/>
+                                <line number="146" hits="0" branch="false"/>
+                                <line number="148" hits="0" branch="false"/>
+                                <line number="158" hits="0" branch="false"/>
+                                <line number="157" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/&lt;none&gt;" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="39" hits="1" branch="false"/>
+                                <line number="37" hits="1" branch="false"/>
+                                <line number="38" hits="1" branch="false"/>
+                                <line number="40" hits="1" branch="false"/>
+                                <line number="39" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/handleHalfOpenAsync" signature="()V" line-rate="0.00" branch-rate="0.00" complexity="0">
+                            <lines>
+                                <line number="183" hits="0" branch="false"/>
+                                <line number="174" hits="0" branch="false"/>
+                                <line number="185" hits="0" branch="false"/>
+                                <line number="175" hits="0" branch="false"/>
+                                <line number="183" hits="0" branch="false"/>
+                                <line number="182" hits="0" branch="false"/>
+                                <line number="177" hits="0" branch="false"/>
+                                <line number="175" hits="0" branch="false"/>
+                                <line number="191" hits="0" branch="false"/>
+                                <line number="176" hits="0" branch="false"/>
+                                <line number="192" hits="0" branch="false"/>
+                                <line number="190" hits="0" branch="false"/>
+                                <line number="178" hits="0" branch="false"/>
+                                <line number="186" hits="0" branch="false"/>
+                                <line number="188" hits="0" branch="false"/>
+                                <line number="181" hits="0" branch="false"/>
+                                <line number="186" hits="0" branch="false"/>
+                                <line number="179" hits="0" branch="false"/>
+                                <line number="186" hits="0" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/openCircuit" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="78" hits="1" branch="false"/>
+                                <line number="79" hits="1" branch="false"/>
+                                <line number="77" hits="1" branch="false"/>
+                                <line number="77" hits="1" branch="false"/>
+                                <line number="76" hits="1" branch="false"/>
+                                <line number="78" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/execute" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="63" hits="1" branch="false"/>
+                                <line number="62" hits="1" branch="false"/>
+                                <line number="60" hits="1" branch="false"/>
+                                <line number="61" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/Circuit/circuitLogger" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="35" hits="1" branch="false"/>
+                            </lines>
+</method>
+                    </methods>
+                    <lines>
+                        <line number="92" hits="1" branch="false"/>
+                        <line number="160" hits="0" branch="false"/>
+                        <line number="110" hits="0" branch="false"/>
+                        <line number="154" hits="0" branch="false"/>
+                        <line number="84" hits="1" branch="false"/>
+                        <line number="98" hits="1" branch="false"/>
+                        <line number="219" hits="0" branch="false"/>
+                        <line number="122" hits="1" branch="false"/>
+                        <line number="57" hits="0" branch="false"/>
+                        <line number="150" hits="0" branch="false"/>
+                        <line number="39" hits="1" branch="false"/>
+                        <line number="183" hits="0" branch="false"/>
+                        <line number="241" hits="0" branch="false"/>
+                        <line number="147" hits="0" branch="false"/>
+                        <line number="209" hits="1" branch="false"/>
+                        <line number="115" hits="1" branch="false"/>
+                        <line number="71" hits="1" branch="false"/>
+                        <line number="124" hits="1" branch="false"/>
+                        <line number="69" hits="0" branch="false"/>
+                        <line number="238" hits="0" branch="false"/>
+                        <line number="163" hits="0" branch="false"/>
+                        <line number="120" hits="1" branch="false"/>
+                        <line number="215" hits="0" branch="false"/>
+                        <line number="103" hits="1" branch="false"/>
+                        <line number="219" hits="0" branch="false"/>
+                        <line number="125" hits="1" branch="false"/>
+                        <line number="71" hits="1" branch="false"/>
+                        <line number="238" hits="0" branch="false"/>
+                        <line number="63" hits="1" branch="false"/>
+                        <line number="174" hits="0" branch="false"/>
+                        <line number="185" hits="0" branch="false"/>
+                        <line number="35" hits="1" branch="false"/>
+                        <line number="175" hits="0" branch="false"/>
+                        <line number="183" hits="0" branch="false"/>
+                        <line number="182" hits="0" branch="false"/>
+                        <line number="91" hits="1" branch="false"/>
+                        <line number="102" hits="1" branch="false"/>
+                        <line number="198" hits="1" branch="false"/>
+                        <line number="47" hits="1" branch="false"/>
+                        <line number="133" hits="0" branch="false"/>
+                        <line number="92" hits="1" branch="false"/>
+                        <line number="241" hits="0" branch="false"/>
+                        <line number="132" hits="0" branch="false"/>
+                        <line number="164" hits="0" branch="false"/>
+                        <line number="155" hits="0" branch="false"/>
+                        <line number="87" hits="1" branch="false"/>
+                        <line number="232" hits="0" branch="false"/>
+                        <line number="62" hits="1" branch="false"/>
+                        <line number="158" hits="0" branch="false"/>
+                        <line number="155" hits="0" branch="false"/>
+                        <line number="37" hits="1" branch="false"/>
+                        <line number="198" hits="1" branch="false"/>
+                        <line number="177" hits="0" branch="false"/>
+                        <line number="38" hits="1" branch="false"/>
+                        <line number="60" hits="1" branch="false"/>
+                        <line number="237" hits="0" branch="false"/>
+                        <line number="78" hits="1" branch="false"/>
+                        <line number="93" hits="1" branch="false"/>
+                        <line number="214" hits="1" branch="false"/>
+                        <line number="114" hits="1" branch="false"/>
+                        <line number="53" hits="1" branch="false"/>
+                        <line number="100" hits="1" branch="false"/>
+                        <line number="217" hits="1" branch="false"/>
+                        <line number="151" hits="0" branch="false"/>
+                        <line number="54" hits="1" branch="false"/>
+                        <line number="83" hits="1" branch="false"/>
+                        <line number="175" hits="0" branch="false"/>
+                        <line number="43" hits="1" branch="false"/>
+                        <line number="147" hits="0" branch="false"/>
+                        <line number="47" hits="1" branch="false"/>
+                        <line number="213" hits="1" branch="false"/>
+                        <line number="191" hits="0" branch="false"/>
+                        <line number="79" hits="1" branch="false"/>
+                        <line number="137" hits="1" branch="false"/>
+                        <line number="240" hits="0" branch="false"/>
+                        <line number="231" hits="0" branch="false"/>
+                        <line number="50" hits="1" branch="false"/>
+                        <line number="227" hits="0" branch="false"/>
+                        <line number="106" hits="1" branch="false"/>
+                        <line number="85" hits="1" branch="false"/>
+                        <line number="231" hits="0" branch="false"/>
+                        <line number="219" hits="0" branch="false"/>
+                        <line number="153" hits="0" branch="false"/>
+                        <line number="158" hits="0" branch="false"/>
+                        <line number="77" hits="1" branch="false"/>
+                        <line number="228" hits="0" branch="false"/>
+                        <line number="128" hits="1" branch="false"/>
+                        <line number="176" hits="0" branch="false"/>
+                        <line number="205" hits="1" branch="false"/>
+                        <line number="68" hits="1" branch="false"/>
+                        <line number="149" hits="0" branch="false"/>
+                        <line number="94" hits="1" branch="false"/>
+                        <line number="211" hits="1" branch="false"/>
+                        <line number="109" hits="0" branch="false"/>
+                        <line number="216" hits="0" branch="false"/>
+                        <line number="192" hits="0" branch="false"/>
+                        <line number="107" hits="0" branch="false"/>
+                        <line number="190" hits="0" branch="false"/>
+                        <line number="44" hits="1" branch="false"/>
+                        <line number="47" hits="1" branch="false"/>
+                        <line number="40" hits="1" branch="false"/>
+                        <line number="104" hits="1" branch="false"/>
+                        <line number="77" hits="1" branch="false"/>
+                        <line number="126" hits="1" branch="false"/>
+                        <line number="162" hits="0" branch="false"/>
+                        <line number="146" hits="0" branch="false"/>
+                        <line number="136" hits="1" branch="false"/>
+                        <line number="76" hits="1" branch="false"/>
+                        <line number="178" hits="0" branch="false"/>
+                        <line number="148" hits="0" branch="false"/>
+                        <line number="61" hits="1" branch="false"/>
+                        <line number="186" hits="0" branch="false"/>
+                        <line number="129" hits="0" branch="false"/>
+                        <line number="235" hits="0" branch="false"/>
+                        <line number="188" hits="0" branch="false"/>
+                        <line number="241" hits="0" branch="false"/>
+                        <line number="84" hits="1" branch="false"/>
+                        <line number="49" hits="1" branch="false"/>
+                        <line number="181" hits="0" branch="false"/>
+                        <line number="131" hits="0" branch="false"/>
+                        <line number="186" hits="0" branch="false"/>
+                        <line number="39" hits="1" branch="false"/>
+                        <line number="78" hits="1" branch="false"/>
+                        <line number="233" hits="0" branch="false"/>
+                        <line number="237" hits="0" branch="false"/>
+                        <line number="179" hits="0" branch="false"/>
+                        <line number="210" hits="1" branch="false"/>
+                        <line number="236" hits="0" branch="false"/>
+                        <line number="70" hits="0" branch="false"/>
+                        <line number="237" hits="0" branch="false"/>
+                        <line number="42" hits="1" branch="false"/>
+                        <line number="48" hits="1" branch="false"/>
+                        <line number="186" hits="0" branch="false"/>
+                        <line number="158" hits="0" branch="false"/>
+                        <line number="86" hits="1" branch="false"/>
+                        <line number="157" hits="0" branch="false"/>
+                        <line number="111" hits="0" branch="false"/>
+                        <line number="206" hits="1" branch="false"/>
+                        <line number="209" hits="1" branch="false"/>
+                    </lines>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.BlockExtensions" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" line-rate="1.00" branch-rate="1.00" complexity="0">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/BlockExtensions/execute" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="8" hits="1" branch="false"/>
+                                <line number="8" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/BlockExtensions/executeAsync" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="11" hits="1" branch="false"/>
+                            </lines>
+</method>
+                    </methods>
+                    <lines>
+                        <line number="8" hits="1" branch="false"/>
+                        <line number="8" hits="1" branch="false"/>
+                        <line number="11" hits="1" branch="false"/>
+                    </lines>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" line-rate="1.00" branch-rate="1.00" complexity="0">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/isSuccess" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="11" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/toOption" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="13" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/toEither" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="17" hits="1" branch="false"/>
+                                <line number="16" hits="1" branch="false"/>
+                            </lines>
+</method>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitResult/isFailed" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="9" hits="1" branch="false"/>
+                            </lines>
+</method>
+                    </methods>
+                    <lines>
+                        <line number="13" hits="1" branch="false"/>
+                        <line number="17" hits="1" branch="false"/>
+                        <line number="11" hits="1" branch="false"/>
+                        <line number="16" hits="1" branch="false"/>
+                        <line number="9" hits="1" branch="false"/>
+                    </lines>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitSuccess" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" line-rate="1.00" branch-rate="1.00" complexity="0">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitSuccess/iterator" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="23" hits="1" branch="false"/>
+                                <line number="23" hits="1" branch="false"/>
+                            </lines>
+</method>
+                    </methods>
+                    <lines>
+                        <line number="23" hits="1" branch="false"/>
+                        <line number="23" hits="1" branch="false"/>
+                    </lines>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitResult.CircuitFailure" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitResult.scala" line-rate="1.00" branch-rate="1.00" complexity="0">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/CircuitFailure/iterator" signature="()V" line-rate="1.00" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="26" hits="1" branch="false"/>
+                            </lines>
+</method>
+                    </methods>
+                    <lines>
+                        <line number="26" hits="1" branch="false"/>
+                    </lines>
+</class>
+                <class 
+                name="com.lprakashv.resilience4s.circuitbreaker.CircuitImplicits.AsyncBlockExtensions" filename="com/lprakashv/resilience4s/circuitbreaker/CircuitImplicits.scala" line-rate="0.50" branch-rate="1.00" complexity="0">
+                    <methods>
+                        <method 
+                        name="com.lprakashv.resilience4s.circuitbreaker/AsyncBlockExtensions/executeAsync" signature="()V" line-rate="0.50" branch-rate="1.00" complexity="0">
+                            <lines>
+                                <line number="21" hits="1" branch="false"/>
+                                <line number="21" hits="0" branch="false"/>
+                            </lines>
+</method>
+                    </methods>
+                    <lines>
+                        <line number="21" hits="1" branch="false"/>
+                        <line number="21" hits="0" branch="false"/>
+                    </lines>
+</class>
+            </classes>
+        </package>
+    </packages>
+</coverage>
