@@ -32,7 +32,7 @@ class Circuit[R](name: String,
                    false
                  })(implicit ec: ExecutionContext) {
   private def circuitLogger(msg: String): Unit =
-    logger.info(s"[$name] [${new Date()}] $msg")
+    logger.info(s"[$name] $msg")
 
   private val closedConsecutiveFailureCount = new AtomicInteger(0)
   private val lastOpenTime = new AtomicLong(Long.MaxValue)
