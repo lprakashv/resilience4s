@@ -1,7 +1,0 @@
-[0m[[0m[0minfo[0m] [0m[0m[32mCircuitBreakerTest:[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- test successes with CircuitImplicits[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- [on continuous invalid execution] failures 5 times[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- [on continuous invalid execution different circuits] failures 5 times[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- [on continuous invalid execution] success with default answer after failure 5 times[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- [on continuous invalid execution] failure 5 times and then successes then failure after timeout (5 sec) and then successes again[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- failure 5 times and then default successes even after having valid execution[0m[0m
